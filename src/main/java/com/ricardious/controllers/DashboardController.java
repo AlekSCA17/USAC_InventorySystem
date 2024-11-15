@@ -26,262 +26,238 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Map;
-
-import org.apache.poi.ss.usermodel.*;
 import java.io.File;
 import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-
-
-
-
-
-
-
-
 import javax.swing.*;
 
 public class DashboardController implements Initializable {
-
-    @FXML
-    private Button Add_Activos;
-
-    @FXML
-    private Button Clear_Campos;
-
-    @FXML
-    private Button Delete_Activos;
-
-    @FXML
-    private TextField Descripcion_Activos;
-
-    @FXML
-    private TextField Literal_Activos;
-
-    @FXML
-    private TextField Renglon_Gasto_Activos;
-
-    @FXML
-    private TextField Search_Bienes;
-
+    // Main form container
     @FXML
     private AnchorPane main_form;
 
+    // Home and navigation buttons
     @FXML
     private Button home_btn;
-
     @FXML
     private Button agregar_empleado;
-
     @FXML
     private Button saldo_activos;
-
     @FXML
     private Button logout;
-
     @FXML
     private Button inventario_empleado;
-
     @FXML
     private Button inventario_activos;
-
     @FXML
     private Button inventario_Global;
-
     @FXML
     private Button empleado;
-
     @FXML
     private Button edificio;
 
+    // Home form container
     @FXML
     private AnchorPane home_form;
 
+    // Form containers for different sections
     @FXML
     private AnchorPane bienes;
-
-    @FXML
-    private TableView<Map> addEmployee_tableView11;
-
-    @FXML
-    private TableColumn<?, ?> addEmployee_col_employeeID11;
-
-    @FXML
-    private TableColumn<?, ?> addEmployee_col_firstName11;
-
-    @FXML
-    private TableColumn<?, ?> addEmployee_col_lastName11;
-
     @FXML
     private AnchorPane inventarioglobal_form;
-
     @FXML
     private AnchorPane agregar_empleado_form;
-
-    @FXML
-    private TableView<?> addEmployee_tableView1;
-
     @FXML
     private AnchorPane saldo_activos_form;
-
-    @FXML
-    private TableView<?> saldo_tableView;
-
     @FXML
     private AnchorPane empleado_form;
-
     @FXML
     private AnchorPane edificios_form;
-
-    @FXML
-    private TableView<Map> edificiotabla;
-
-    @FXML
-    private TableColumn<?, ?> col_id_edificios;
-
-    @FXML
-    private TableColumn<?, ?> col_nombre_edificios;
-
-    @FXML
-    private TableColumn<?, ?> col_ubicacion_edificios;
-
-    @FXML
-    private TableColumn<?, ?> col_descripcion_edificios;
-
-    @FXML
-    private TableColumn<?, ?> col_seccion_edificios;
-
-    @FXML
-    private TextField agregar_idedificio;
-
-    @FXML
-    private TextField agregar_nombreedificios;
-
-    @FXML
-    private TextField agregar_ubicacion;
-
-    @FXML
-    private TextField agregar_descripcion;
-
-    @FXML
-    private TextField agregar_seccion;
-
-    @FXML
-    private Button limpiardatos_edificiosbt;
-
-    @FXML
-    private Button agregarinfo_edificiosbt;
-
-    @FXML
-    private Button eliminaredificio_bt;
-
-   
-
-
-
-
     @FXML
     private AnchorPane inventarioempleado_form;
 
+    // Buttons related to asset actions
+    @FXML
+    private Button Add_Activos;
+    @FXML
+    private Button Clear_Campos;
+    @FXML
+    private Button Delete_Activos;
+
+    // TextFields for asset input details
+    @FXML
+    private TextField Descripcion_Activos;
+    @FXML
+    private TextField Literal_Activos;
+    @FXML
+    private TextField Renglon_Gasto_Activos;
+    @FXML
+    private TextField Search_Bienes;
+
+    // TableView and columns for adding employees (specific to addEmployee_form)
+    @FXML
+    private TableView<Map> addEmployee_tableView11;
+    @FXML
+    private TableColumn<?, ?> addEmployee_col_employeeID11;
+    @FXML
+    private TableColumn<?, ?> addEmployee_col_firstName11;
+    @FXML
+    private TableColumn<?, ?> addEmployee_col_lastName11;
+    @FXML
+    private TableView<?> addEmployee_tableView1;
+
+    // TableView for asset balances (specific to saldo_activos_form)
+    @FXML
+    private TableView<?> saldo_tableView;
+
+    // TableView and columns for buildings inventory
+    @FXML
+    private TableView<Map> edificiotabla;
+    @FXML
+    private TableColumn<?, ?> col_id_edificios;
+    @FXML
+    private TableColumn<?, ?> col_nombre_edificios;
+    @FXML
+    private TableColumn<?, ?> col_ubicacion_edificios;
+    @FXML
+    private TableColumn<?, ?> col_descripcion_edificios;
+    @FXML
+    private TableColumn<?, ?> col_seccion_edificios;
+
+    // TextFields for building input details
+    @FXML
+    private TextField agregar_idedificio;
+    @FXML
+    private TextField agregar_nombreedificios;
+    @FXML
+    private TextField agregar_ubicacion;
+    @FXML
+    private TextField agregar_descripcion;
+    @FXML
+    private TextField agregar_seccion;
+
+    // TableView and columns for employee inventory (specific to inventarioempleado_form)
     @FXML
     private TableView<Map> inventarioempl_table;
-
     @FXML
-    private TableColumn<?, ?> inventarioempleo_tarjeta;
-
+    private TableColumn<?, ?> inventarioempleado_tarjeta;
     @FXML
-    private TableColumn<?, ?> inventarioempleo_activo;
-
+    private TableColumn<?, ?> inventarioempleado_codigoactivo;
     @FXML
-    private TableColumn<?, ?> inventarioempleo_desc;
-
+    private TableColumn<?, ?> inventarioempleado_desc;
     @FXML
-    private TableColumn<?, ?> inventarioempleo_estado;
-
+    private TableColumn<?, ?> inventarioempleado_valor;
     @FXML
-    private TableColumn<?, ?> inventarioempleo_condicion;
-
-
+    private TableColumn<?, ?> inventarioempleado_registropersonal;
     @FXML
-    private Button inventarioempl_cleanbtn;
-
+    private TableColumn<?, ?> inventarioempleado_nombre;
     @FXML
-    private Button inventarioempl_updatebtn;
-
+    private TableColumn<?, ?> inventarioempleado_activo;
     @FXML
-    private Button inventarioempl_eliminarbtn;
+    private TableColumn<?, ?> inventarioempleado_seccion;
+    @FXML
+    private TableColumn<?, ?> inventarioempleado_estado;
 
+    // TextFields for employee inventory details
+    @FXML
+    private TextField empleadotarjetafield;
+    @FXML
+    private TextField empleadocodigofield;
+    @FXML
+    private TextField empleadodescripfield;
+    @FXML
+    private TextField empleadovalorfield;
+    @FXML
+    private TextField empleadoregistrofield;
+    @FXML
+    private TextField empleadonombrefield;
+    @FXML
+    private TextField empleadoactivofield;
+    @FXML
+    private TextField empleadoseccionfield;
+    @FXML
+    private TextField empleadoestadofield;
 
-
-
-
-
-
-
+    // Data filtering and sorting for TableView
     private FilteredList<Map> filteredData;
     private SortedList<Map> sortedData;
 
 
 
+    /**
+     * Sets up search functionality for a TableView by filtering data based on input in a TextField.
+     * This method listens to changes in the search field and filters items in the TableView according
+     * to specified properties in each item. It supports dynamic sorting and binding to the TableView's comparator.
+     *
+     * @param searchField the TextField where users input search text
+     * @param tableView the TableView to be filtered and sorted
+     * @param data the original data list to be displayed in the TableView
+     * @param searchProperties the properties within each item to be searched for matches with the input text
+     * @param <T> the type of items in the TableView
+     */
     private <T> void setupTableSearch(TextField searchField, TableView<T> tableView, ObservableList<T> data,
                                       String... searchProperties) {
-        // Inicializa FilteredList con todos los datos
+        // Initializes FilteredList with all data, initially showing all items
         FilteredList<T> filteredData = new FilteredList<>(data, p -> true);
 
-        // Añade listener al campo de búsqueda
+        // Adds a listener to the search field to detect text input changes
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(item -> {
-                // Si el texto de búsqueda está vacío, muestra todos los items
+                // If the search text is empty, all items are displayed
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
 
                 String lowerCaseFilter = newValue.toLowerCase();
 
-                // Busca en todas las propiedades especificadas
+                // Checks each specified property for a match with the search text
                 for (String property : searchProperties) {
                     String value = "";
                     if (item instanceof Map) {
+                        // If item is a Map, retrieve value using the property key
                         value = String.valueOf(((Map) item).get(property));
                     } else {
                         try {
+                            // If item is not a Map, retrieve value through reflection
                             value = String.valueOf(item.getClass().getField(property).get(item));
                         } catch (Exception e) {
-                            continue;
+                            continue; // Skips to the next property if error occurs
                         }
                     }
 
+                    // If the property's value contains the search text, the item is shown
                     if (value.toLowerCase().contains(lowerCaseFilter)) {
                         return true;
                     }
                 }
+                // If no properties match, item is filtered out
                 return false;
             });
         });
 
-        // Enlaza SortedList con FilteredList
+        // Creates a SortedList linked to the FilteredList for automatic sorting
         SortedList<T> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(tableView.comparatorProperty());
 
-        // Vincula los datos filtrados y ordenados a la tabla
+        // Binds the sorted and filtered data to the table view
         tableView.setItems(sortedData);
     }
 
+
+    /**
+     * Sets up the search functionality specifically for the "Bienes" table view.
+     * It uses the `setupTableSearch` method to enable dynamic filtering of the table based on input in the
+     * `Search_Bienes` TextField. The method filters the items in the `addEmployee_tableView11` based on
+     * the specified properties: `ColLiteral`, `ColDescripcion`, and `ColRenglonGasto`.
+     */
     private void setupBienesSearch() {
         setupTableSearch(Search_Bienes,
                 addEmployee_tableView11,
@@ -292,41 +268,77 @@ public class DashboardController implements Initializable {
 
 
 
+
     @FXML
     void importEXCEL(MouseEvent event) {
 
     }
 
-    private String ColLiteral = "Literal";
-    private String ColDescripcion = "Descripcion";
-    private String ColRenglonGasto = "RenglonGasto";
+    private String ColLiteral = "Literal";  // Column name for "Literal" property
+    private String ColDescripcion = "Descripcion";  // Column name for "Descripcion" property
+    private String ColRenglonGasto = "RenglonGasto";  // Column name for "RenglonGasto" property
 
-    public ObservableList<Map> getBienes(){
+    /**
+     * Retrieves a list of "Bienes" (assets) from the database and returns it as an observable list.
+     * This method connects to the database, performs a query to fetch all rows from the "bienes" table,
+     * and then processes the result set to create a list of maps containing asset details.
+     * Each map represents one asset with properties such as "Literal", "Descripcion", and "RenglonGasto".
+     *
+     * @return ObservableList<Map> A list of assets (bienes) represented as maps with asset details.
+     */
+    public ObservableList<Map> getBienes() {
+        // SQL query to fetch all rows from the "bienes" table
         var sql = "SELECT * FROM usac_inventory.bienes";
-        ObservableList<Map> bienesList = FXCollections.observableArrayList();
-        try{
-        DatabaseConnection connectNow = new DatabaseConnection();
-        PreparedStatement consulta = connectNow.getConnection().prepareStatement(sql);
-        ResultSet resultSet = consulta.executeQuery();
-        while (resultSet.next()){
-            ActivoFijo ActivoFijo = new ActivoFijo();
-            Map<String, Object> coleccion = new HashMap<>();
-            ActivoFijo.setLiteral(resultSet.getString("Literal"));
-            ActivoFijo.setDescripcion(resultSet.getString("Descripcion"));
-            ActivoFijo.setRenglonGasto(Integer.parseInt(resultSet.getString("RenglonGasto")));
-            coleccion.put(ColLiteral, ActivoFijo.getLiteral());
-            coleccion.put(ColDescripcion, ActivoFijo.getDescripcion());
-            coleccion.put(ColRenglonGasto, String.valueOf(resultSet.getInt("RenglonGasto")));
-            bienesList.add(coleccion);
-        }
-        resultSet.close();
-        consulta.close();
+        ObservableList<Map> bienesList = FXCollections.observableArrayList();  // List to store the assets
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        Connection connection = null;  // Connection object to be used to close the connection properly
+        try {
+            // Establish connection to the database
+            DatabaseConnection connectNow = new DatabaseConnection();
+            connection = connectNow.getConnection();  // Get database connection
+            PreparedStatement consulta = connection.prepareStatement(sql);  // Prepare SQL statement
+            ResultSet resultSet = consulta.executeQuery();  // Execute the query
+
+            // Process each row in the result set
+            while (resultSet.next()) {
+                ActivoFijo ActivoFijo = new ActivoFijo();  // Create a new asset object
+                Map<String, Object> coleccion = new HashMap<>();  // Map to hold the asset details
+
+                // Set asset properties from the result set
+                ActivoFijo.setLiteral(resultSet.getString("Literal"));
+                ActivoFijo.setDescripcion(resultSet.getString("Descripcion"));
+                ActivoFijo.setRenglonGasto(resultSet.getInt("RenglonGasto"));
+
+                // Put asset details into the map
+                coleccion.put(ColLiteral, ActivoFijo.getLiteral());
+                coleccion.put(ColDescripcion, ActivoFijo.getDescripcion());
+                coleccion.put(ColRenglonGasto, String.valueOf(ActivoFijo.getRenglonGasto()));
+
+                // Add the map to the list
+                bienesList.add(coleccion);
+            }
+            // Close resources
+            resultSet.close();
+            consulta.close();
+
+        } catch (SQLException e) {
+            // Handle SQL exceptions by printing the error message
+            System.err.println("Error while fetching bienes: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Ensure the database connection is closed properly in the "finally" block
+            try {
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();  // Close the connection
+                }
+            } catch (SQLException e) {
+                System.err.println("Error while closing the connection: " + e.getMessage());
+            }
         }
+        // Return the list of assets (bien)
         return bienesList;
     }
+
 
     private void llenarTablaBienes(){
         ObservableList<Map> lista = getBienes();
@@ -403,8 +415,6 @@ public class DashboardController implements Initializable {
 
 
 
-
-
     @FXML
     void importtEXCELL(MouseEvent event) {
 
@@ -413,8 +423,12 @@ public class DashboardController implements Initializable {
     private String ColTarjeta = "Tarjeta";
     private String ColCodigoActivo = "CodigoActivo";
     private String ColDescripcionnn = "Descripcion";
+    private String ColValor = "Valor";
+    private String ColRegistropersonal = "Registropersonal";
+    private String ColNombreempleado = "Nombreempleado";
+    private String ColActivo = "Activo";
+    private String ColSeccionn = "Seccionn";
     private String ColEstado = "Estado";
-    private String ColCondicion = "Condicion";
 
 
 
@@ -431,13 +445,21 @@ public class DashboardController implements Initializable {
                 EmpleadobienesFijo.setTarjeta(resulttSet.getInt("Tarjeta"));
                 EmpleadobienesFijo.setCodigoActivo(resulttSet.getString("CodigoActivo"));
                 EmpleadobienesFijo.setDescripcion(resulttSet.getString("Descripcion"));
+                EmpleadobienesFijo.setValor(resulttSet.getString("Valor"));
+                EmpleadobienesFijo.setRegistropersonal(resulttSet.getString("Registropersonal"));
+                EmpleadobienesFijo.setNombreempleado(resulttSet.getString("Nombreempleado"));
+                EmpleadobienesFijo.setActivo(resulttSet.getString("Activo"));
+                EmpleadobienesFijo.setSeccionn(resulttSet.getString("Seccionn"));
                 EmpleadobienesFijo.setEstado(resulttSet.getString("Estado"));
-                EmpleadobienesFijo.setCondicion(resulttSet.getString("Condicion"));
                 colecccion.put(ColTarjeta, EmpleadobienesFijo.getTarjeta());
                 colecccion.put(ColCodigoActivo, EmpleadobienesFijo.getCodigoActivo());
                 colecccion.put(ColDescripcionnn,  EmpleadobienesFijo.getDescripcion());
+                colecccion.put(ColValor, EmpleadobienesFijo.getValor());
+                colecccion.put(ColRegistropersonal,  EmpleadobienesFijo.getRegistropersonal());
+                colecccion.put(ColNombreempleado, EmpleadobienesFijo.getNombreempleado());
+                colecccion.put(ColActivo, EmpleadobienesFijo.getActivo());
+                colecccion.put(ColSeccionn, EmpleadobienesFijo.getSeccionn());
                 colecccion.put(ColEstado, EmpleadobienesFijo.getEstado());
-                colecccion.put(ColCondicion,  EmpleadobienesFijo.getCondicion());
 
                 empleadobienesList.add(colecccion);
             }
@@ -452,15 +474,17 @@ public class DashboardController implements Initializable {
 
     private void llenarTablaEmpleadobienes(){
         ObservableList<Map> listta = getEmpleadobienes();
-        this.inventarioempleo_tarjeta.setCellValueFactory(new MapValueFactory(ColTarjeta));
-        this.inventarioempleo_activo.setCellValueFactory(new MapValueFactory(ColCodigoActivo));
-        this.inventarioempleo_desc.setCellValueFactory(new MapValueFactory(ColDescripcionnn));
-        this.inventarioempleo_estado.setCellValueFactory(new MapValueFactory(ColEstado));
-        this.inventarioempleo_condicion.setCellValueFactory(new MapValueFactory(ColCondicion));
-
+        this.inventarioempleado_tarjeta.setCellValueFactory(new MapValueFactory(ColTarjeta));
+        this.inventarioempleado_codigoactivo.setCellValueFactory(new MapValueFactory(ColCodigoActivo));
+        this.inventarioempleado_desc.setCellValueFactory(new MapValueFactory(ColDescripcionnn));
+        this.inventarioempleado_valor.setCellValueFactory(new MapValueFactory(ColValor));
+        this.inventarioempleado_registropersonal.setCellValueFactory(new MapValueFactory(ColRegistropersonal));
+        this.inventarioempleado_nombre.setCellValueFactory(new MapValueFactory(ColNombreempleado));
+        this.inventarioempleado_activo.setCellValueFactory(new MapValueFactory(ColActivo));
+        this.inventarioempleado_seccion.setCellValueFactory(new MapValueFactory(ColSeccionn));
+        this.inventarioempleado_estado.setCellValueFactory(new MapValueFactory(ColEstado));
 
         this.inventarioempl_table.setItems(listta);
-
 
     }
 
@@ -848,12 +872,107 @@ public class DashboardController implements Initializable {
         setColumnResizePolicy(saldo_tableView);
         setColumnResizePolicy(addEmployee_tableView1);
         setColumnResizePolicy(addEmployee_tableView11);
+        setColumnResizePolicy(edificiotabla);
         home_btn.setStyle("-fx-background-color: linear-gradient(to bottom right, #7f00ff, #e100ff);");
     }
 
     private void setColumnResizePolicy(TableView<?> tableView) {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
+
+
+
+
+
+
+
+
+    @FXML
+    void AAdd(MouseEvent event) {
+        String Tarjeta = empleadotarjetafield.getText();
+        Integer tarejta = Integer.parseInt(Tarjeta);
+        String CodigoActivo = empleadocodigofield.getText();
+        String Descripcion = empleadodescripfield.getText();
+        String Valor = empleadovalorfield.getText();
+        String Registropersonal = empleadoregistrofield.getText();
+        String Nombreempleado = empleadonombrefield.getText();
+        String Activo = empleadoactivofield.getText();
+        String Seccionn = empleadoseccionfield.getText();
+        String Estado = empleadoestadofield.getText();
+
+
+
+
+
+        DatabaseConnection connecttNow = new DatabaseConnection();
+        String addEmpleadobienes = "INSERT INTO usac_inventory.empleadobienes(Tarjeta, CodigoActivo, Descripcion, Valor, Registropersonal, Nombreempleado, Activo, Seccionn, Estado) VALUES (?, ? , ?, ?, ?, ?, ?, ?, ? )";
+        try (Connection connectDBs = connecttNow.getConnection();
+             PreparedStatement preparedStatement = connectDBs.prepareStatement(addEmpleadobienes)){
+            preparedStatement.setInt(1, tarejta);
+            preparedStatement.setString(2, CodigoActivo);
+            preparedStatement.setString(3, Descripcion);
+            preparedStatement.setString(4, Valor);
+            preparedStatement.setString(5, Registropersonal);
+            preparedStatement.setString(6, Nombreempleado);
+            preparedStatement.setString(7, Activo);
+            preparedStatement.setString(8, Seccionn);
+            preparedStatement.setString(9, Estado);
+
+
+
+            preparedStatement.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Se han insertado los datos");
+        }
+        catch (SQLException u) {
+            JOptionPane.showMessageDialog(null, "Datos ingresados no validos");
+            u.printStackTrace();
+        }
+        llenarTablaEdificios();
+    }
+
+    @FXML
+    void Cllear(MouseEvent event) {
+        empleadotarjetafield.setText("");
+        empleadocodigofield.setText("");
+        empleadodescripfield.setText("");
+        empleadovalorfield.setText("");
+        empleadoregistrofield.setText("");
+        empleadonombrefield.setText("");
+        empleadoactivofield.setText("");
+        empleadoseccionfield.setText("");
+        empleadoestadofield.setText("");
+
+    }
+
+    @FXML
+    void Delette(MouseEvent event) {
+        String Tarjeta = JOptionPane.showInputDialog(null, "Ingrese el tarejta a Eliminar: ", "Ingrese aquí el texto", JOptionPane.OK_CANCEL_OPTION);
+
+        if (Tarjeta == null || Tarjeta.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Operación cancelada");
+            return; // Sale del método sin hacer nada
+        }
+        else {
+            DatabaseConnection connecttNow = new DatabaseConnection();
+            String addEmpleadobienes = "DELETE FROM usac_inventory.empleadobienes WHERE (Tarjeta = ?)";
+            try (Connection connectDBs = connecttNow.getConnection();
+                 PreparedStatement preparedStatement = connectDBs.prepareStatement(addEmpleadobienes)){
+                preparedStatement.setString(1, Tarjeta);
+                preparedStatement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Se han Eliminado los datos");
+            }
+            catch (SQLException u) {
+                JOptionPane.showMessageDialog(null, "Datos ingresados no validos");
+                u.printStackTrace();
+            }
+        }
+        llenarTablaEmpleadobienes();
+    }
+
+
+
+
 
 
 
@@ -869,7 +988,7 @@ public class DashboardController implements Initializable {
 
             // Crear encabezados
             Row headerRow = sheet.createRow(0);
-            String[] headers = {ColTarjeta, ColCodigoActivo, ColDescripcionnn, ColEstado, ColCondicion};
+            String[] headers = {ColTarjeta, ColCodigoActivo, ColDescripcionnn, ColValor, ColRegistropersonal, ColNombreempleado, ColActivo, ColSeccionn, ColEstado};
 
             for (int i = 0; i < headers.length; i++) {
                 org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(i);
@@ -903,8 +1022,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-
-
     @FXML
     void importFromExcel(MouseEvent event) {
         String filePath = "empleadobienes.xlsx"; // Ruta del archivo Excel
@@ -914,7 +1031,7 @@ public class DashboardController implements Initializable {
 
             Sheet sheet = workbook.getSheetAt(0);
             Connection connection = new DatabaseConnection().getConnection();
-            String sql = "INSERT INTO usac_inventory.empleadobienes (Tarjeta, CodigoActivo, Descripcion, Estado, Condicion) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO usac_inventory.empleadobienes (Tarjeta, CodigoActivo, Descripcion, Valor, Registropersonal, Nombreempleado, Activo, Seccionn, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             connection.setAutoCommit(false); // Iniciamos una transacción
 
@@ -922,13 +1039,16 @@ public class DashboardController implements Initializable {
                 Row row = sheet.getRow(i);
                 if (row != null) {
                     try {
-                        // Leer los valores de cada celda, con validación para asegurarnos de que no estén vacíos
                         Integer tarjeta = (row.getCell(0) != null && row.getCell(0).getCellType() == CellType.NUMERIC) ?
                                 (int) row.getCell(0).getNumericCellValue() : null;
-                        String codigoActivo = (row.getCell(1) != null) ? row.getCell(1).getStringCellValue() : "";
-                        String descripcion = (row.getCell(2) != null) ? row.getCell(2).getStringCellValue() : "";
-                        String estado = (row.getCell(3) != null) ? row.getCell(3).getStringCellValue() : "";
-                        String condicion = (row.getCell(4) != null) ? row.getCell(4).getStringCellValue() : "";
+                        String codigoActivo = getCellValueAsString(row.getCell(1));
+                        String descripcion = getCellValueAsString(row.getCell(2));
+                        String valor = getCellValueAsString(row.getCell(3));
+                        String registropersonal = getCellValueAsString(row.getCell(4));
+                        String nombreempleado = getCellValueAsString(row.getCell(5));
+                        String activo = getCellValueAsString(row.getCell(6));
+                        String seccionn = getCellValueAsString(row.getCell(7));
+                        String estado = getCellValueAsString(row.getCell(8));
 
                         if (tarjeta == null || codigoActivo.isEmpty() || descripcion.isEmpty()) {
                             System.out.println("Fila inválida en el índice " + i + ", se omite.");
@@ -940,8 +1060,13 @@ public class DashboardController implements Initializable {
                         preparedStatement.setInt(1, tarjeta);
                         preparedStatement.setString(2, codigoActivo);
                         preparedStatement.setString(3, descripcion);
-                        preparedStatement.setString(4, estado);
-                        preparedStatement.setString(5, condicion);
+                        preparedStatement.setString(4, valor);
+                        preparedStatement.setString(5, registropersonal);
+                        preparedStatement.setString(6, nombreempleado);
+                        preparedStatement.setString(7, activo);
+                        preparedStatement.setString(8, seccionn);
+                        preparedStatement.setString(9, estado);
+
                         preparedStatement.executeUpdate();
                     } catch (Exception e) {
                         System.err.println("Error al procesar la fila " + i + ": " + e.getMessage());
@@ -957,6 +1082,30 @@ public class DashboardController implements Initializable {
             System.err.println("Error al importar los datos desde Excel: " + e.getMessage());
         }
     }
+
+    // Método auxiliar para convertir el valor de una celda a String
+    private String getCellValueAsString(org.apache.poi.ss.usermodel.Cell cell) {
+        if (cell == null) {
+            return "";
+        }
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue();
+            case NUMERIC:
+                if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
+                    return cell.getDateCellValue().toString(); // Para fechas, puedes formatear esto según necesites
+                } else {
+                    return String.valueOf((int) cell.getNumericCellValue()); // Convertir a entero si es un número
+                }
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue());
+            case FORMULA:
+                return cell.getCellFormula();
+            default:
+                return "";
+        }
+    }
+
 
 
 
